@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { PROFILE } from "@/data/profile";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -37,36 +38,42 @@ export default function RootLayout({
         <footer className="bg-surface-container-lowest dark:bg-surface-container-lowest w-full rounded-t-[3rem] bg-surface-container-low dark:bg-surface-container-low mt-stack-lg">
           <div className="flex flex-col md:flex-row justify-between items-center py-stack-md px-margin-mobile max-w-container-max mx-auto">
             <div className="font-display-lg-mobile text-body-base text-primary mb-4 md:mb-0">
-              CreatorPort
+              {PROFILE.brandName}
             </div>
             <div className="flex gap-6 mb-4 md:mb-0">
               <a
                 className="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
-                href="#"
+                href={PROFILE.socials.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 LinkedIn
               </a>
               <a
                 className="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
-                href="#"
+                href={PROFILE.socials.github}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 GitHub
               </a>
               <a
                 className="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
-                href="#"
+                href={`mailto:${PROFILE.socials.email}`}
               >
                 Email
               </a>
               <a
                 className="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
-                href="#"
+                href={PROFILE.socials.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Twitter
               </a>
             </div>
             <div className="font-label-caps text-label-caps text-secondary dark:text-secondary-fixed">
-              © 2024 CreatorPort. Built with Heart and Logic.
+              © 2026 {PROFILE.brandName}. Built with Heart and Logic.
             </div>
           </div>
         </footer>

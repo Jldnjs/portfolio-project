@@ -54,3 +54,4 @@ async def chat_with_portfolio_ai(payload: ChatRequest) -> ChatResponse:
             ChatLinkSchema(label="이력서 확인하기", href="/resume"),
         ],
     )
+

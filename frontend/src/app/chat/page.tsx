@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { PROFILE } from "@/data/profile";
 import { PROJECTS } from "@/data/projects";
 
 interface ChatLink {
@@ -35,9 +36,9 @@ function buildLocalPortfolioReply(question: string): {
     q.includes("skill") ||
     q.includes("stack")
   ) {
+    const skillList = PROFILE.skills.map((s) => s.name).join(", ");
     return {
-      content:
-        "프론트엔드는 Next.js(App Router), React, TypeScript, Tailwind CSS를 주로 다루며, 백엔드는 FastAPI, SQLAlchemy(Async), PostgreSQL, Docker Compose 기반의 풀스택 아키텍처를 설계하고 구현합니다.",
+      content: `주로 다루는 핵심 기술 스택은 ${skillList} 입니다. 프론트엔드와 백엔드를 아우르는 풀스택 아키텍처를 설계하고 구현합니다.`,
       links: [
         { label: "이력서 및 기술 스택 보기", href: "/resume" },
         { label: "전체 프로젝트 목록", href: "/project/list" },
@@ -79,9 +80,11 @@ function buildLocalPortfolioReply(question: string): {
     q.includes("커리어") ||
     q.includes("연락")
   ) {
+    const expSummary = PROFILE.experiences
+      .map((e) => `• ${e.period}: ${e.company} (${e.role})`)
+      .join("\n");
     return {
-      content:
-        "이력서 요약 페이지에서 핵심 기술 스택과 경력 요약을 확인하실 수 있고, 상세 타임라인 페이지에서는 연도별 주요 성과와 담당 역할을 자세히 보실 수 있습니다.",
+      content: `주요 경력 요약입니다:\n${expSummary}\n\n이메일(${PROFILE.socials.email}) 또는 이력서 페이지를 통해 더 자세한 내용을 확인하실 수 있습니다.`,
       links: [
         { label: "이력서 요약 (/resume)", href: "/resume" },
         { label: "상세 경력 타임라인 (/resume/history)", href: "/resume/history" },
