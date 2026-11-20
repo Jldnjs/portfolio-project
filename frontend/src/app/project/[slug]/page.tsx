@@ -149,6 +149,64 @@ export default async function ProjectDetailPage({
         </div>
       </section>
 
+      {/* Architecture & ERD Diagrams */}
+      {project.diagrams && project.diagrams.length > 0 && (
+        <section className="mb-stack-xl">
+          <div className="text-center mb-stack-md">
+            <h2 className="font-headline-md text-headline-md text-primary mb-2">
+              Architecture &amp; ERD
+            </h2>
+            <p className="font-body-base text-body-base text-on-surface-variant text-sm">
+              이미지를 클릭하면 새 창에서 원본 크기로 자세히 보실 수 있습니다.
+            </p>
+          </div>
+          <div
+            className={`grid grid-cols-1 ${
+              project.diagrams.length > 1 ? "lg:grid-cols-2" : "max-w-4xl mx-auto"
+            } gap-gutter`}
+          >
+            {project.diagrams.map((diagram) => (
+              <div
+                key={diagram.title}
+                className="bg-surface-container-low rounded-[32px] p-6 shadow-cute border border-outline-variant/20 flex flex-col"
+              >
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <h3 className="font-headline-md text-lg font-bold text-primary">
+                    {diagram.title}
+                  </h3>
+                  <a
+                    href={diagram.src}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-primary bg-primary-fixed/60 hover:bg-primary-fixed px-3 py-1 rounded-full transition-colors shrink-0"
+                  >
+                    크게 보기
+                    <span className="material-symbols-outlined text-[14px]">
+                      open_in_new
+                    </span>
+                  </a>
+                </div>
+                <p className="font-body-base text-xs text-on-surface-variant mb-4 leading-relaxed">
+                  {diagram.description}
+                </p>
+                <a
+                  href={diagram.src}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block rounded-2xl overflow-hidden bg-surface-container-lowest border border-outline-variant/20 hover:opacity-95 transition-opacity"
+                >
+                  <img
+                    src={diagram.src}
+                    alt={diagram.alt}
+                    className="w-full h-auto object-contain"
+                  />
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Key Features Grid */}
       <section className="mb-stack-xl">
         <div className="text-center mb-stack-md">

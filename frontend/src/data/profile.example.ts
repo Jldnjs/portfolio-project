@@ -143,3 +143,4 @@ export const PROFILE: ProfileData = {
   growthPlan: ["앞으로의 기술 성장 목표 1", "앞으로의 기술 성장 목표 2"],
   contributions: ["팀 및 서비스에 기여할 수 있는 역량 1", "역량 2"],
 };
+

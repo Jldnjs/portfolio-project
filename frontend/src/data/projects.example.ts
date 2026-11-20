@@ -19,6 +19,13 @@ export interface ProjectTroubleshooting {
   result?: string;
 }
 
+export interface ProjectDiagram {
+  title: string;
+  description: string;
+  src: string;
+  alt: string;
+}
+
 export interface ProjectItem {
   slug: string;
   title: string;
@@ -35,6 +42,7 @@ export interface ProjectItem {
   conceptHighlight?: string;
   conceptDescription: string;
   architectureNotes: ProjectArchitectureNote[];
+  diagrams?: ProjectDiagram[];
   features: ProjectFeature[];
   troubleshooting: ProjectTroubleshooting[];
   techStack: string[];
@@ -96,3 +104,4 @@ export const PROJECTS: ProjectItem[] = [
 export function getProjectBySlug(slug: string): ProjectItem | undefined {
   return PROJECTS.find((p) => p.slug === slug);
 }
+
