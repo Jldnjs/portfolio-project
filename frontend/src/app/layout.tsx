@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "CreatorPort - Cute Portfolio",
-  description: "A cute portfolio",
+  title: "Portfolio | Backend & AI Engineer",
+  description: "FastAPI + PostgreSQL + Next.js 기반 개발자 포트폴리오",
 };
 
 export default function RootLayout({
@@ -43,14 +43,6 @@ export default function RootLayout({
             <div className="flex gap-6 mb-4 md:mb-0">
               <a
                 className="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
-                href={PROFILE.socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                LinkedIn
-              </a>
-              <a
-                className="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
                 href={PROFILE.socials.github}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -59,17 +51,17 @@ export default function RootLayout({
               </a>
               <a
                 className="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
-                href={`mailto:${PROFILE.socials.email}`}
-              >
-                Email
-              </a>
-              <a
-                className="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
-                href={PROFILE.socials.twitter}
+                href={PROFILE.socials.blog}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Twitter
+                Blog (Tistory)
+              </a>
+              <a
+                className="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
+                href={`mailto:${PROFILE.socials.email}`}
+              >
+                Email
               </a>
             </div>
             <div className="font-label-caps text-label-caps text-secondary dark:text-secondary-fixed">

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { PROFILE } from "@/data/profile";
 
 const NAV_ITEMS = [
   { label: "Intro", href: "/", match: (path: string) => path === "/" },
@@ -35,7 +36,7 @@ export default function Navbar() {
           href="/"
           className="font-display-lg text-headline-md tracking-tighter text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity"
         >
-          CreatorPort
+          {PROFILE.brandName}
         </Link>
         <div className="flex gap-6 items-center">
           {NAV_ITEMS.map((item) => {
@@ -72,7 +73,7 @@ export default function Navbar() {
             href="/"
             className="font-display-lg-mobile text-headline-md tracking-tighter text-primary"
           >
-            CreatorPort
+            {PROFILE.brandName}
           </Link>
           <button
             className="text-primary"

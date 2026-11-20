@@ -50,41 +50,45 @@ function buildLocalPortfolioReply(question: string): {
     q.includes("트러블") ||
     q.includes("문제") ||
     q.includes("어려웠") ||
-    q.includes("해결")
+    q.includes("해결") ||
+    q.includes("동시성") ||
+    q.includes("톰캣") ||
+    q.includes("tomcat") ||
+    q.includes("오버헤드") ||
+    q.includes("인텐트")
   ) {
-    const withTroubleshooting = PROJECTS.filter(
-      (p) => p.troubleshooting && p.troubleshooting.length > 0
+    const careerCases = PROFILE.troubleshooting.map(
+      (t) => `• [${t.title}] ${t.problem} → ${t.solution} (${t.result})`
     );
-    const summaryLines = withTroubleshooting
-      .map(
-        (p) =>
-          `• [${p.title}] ${p.troubleshooting![0].problem} → ${p.troubleshooting![0].solution}`
+    const projectCases = PROJECTS.flatMap((p) =>
+      p.troubleshooting.map(
+        (t) => `• [${p.title} - ${t.title}] ${t.solution} (${t.result || ""})`
       )
-      .join("\n\n");
+    );
 
     return {
-      content:
-        summaryLines ||
-        "각 토이 프로젝트 상세 페이지의 Troubleshooting 섹션에서 문제 정의와 해결 과정을 확인하실 수 있습니다.",
-      links: withTroubleshooting.map((p) => ({
-        label: `${p.title} 상세 보기`,
-        href: `/project/${p.slug}`,
-      })),
+      content: [...careerCases, ...projectCases].join("\n\n"),
+      links: [
+        { label: "실무 트러블슈팅 상세 보기", href: "/resume/history#troubleshooting" },
+        { label: "VOC-OPS-MSA 보기", href: "/project/voc-ops-msa" },
+        { label: "Leo-PLLM 보기", href: "/project/leo-pllm" },
+      ],
     };
   }
 
   if (
     q.includes("이력") ||
     q.includes("경력") ||
+    q.includes("인싸이트") ||
     q.includes("resume") ||
     q.includes("커리어") ||
     q.includes("연락")
   ) {
     const expSummary = PROFILE.experiences
-      .map((e) => `• ${e.period}: ${e.company} (${e.role})`)
+      .map((e) => `• ${e.period}: ${e.role}`)
       .join("\n");
     return {
-      content: `주요 경력 요약입니다:\n${expSummary}\n\n이메일(${PROFILE.socials.email}) 또는 이력서 페이지를 통해 더 자세한 내용을 확인하실 수 있습니다.`,
+      content: `${PROFILE.careerSummary.company} (${PROFILE.careerSummary.period})에서 ${PROFILE.careerSummary.description} 업무를 수행했습니다.\n\n${expSummary}\n\n이메일(${PROFILE.socials.email}) 또는 이력서 페이지를 통해 더 자세한 내용을 확인하실 수 있습니다.`,
       links: [
         { label: "이력서 요약 (/resume)", href: "/resume" },
         { label: "상세 경력 타임라인 (/resume/history)", href: "/resume/history" },

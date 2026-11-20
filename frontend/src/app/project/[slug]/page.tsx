@@ -54,16 +54,21 @@ export default async function ProjectDetailPage({
       </div>
 
       {/* Hero Section */}
-      <section className="flex flex-col items-center text-center mb-stack-xl pt-stack-sm">
-        <span className="bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps px-4 py-2 rounded-full mb-stack-sm inline-block shadow-cute">
-          {project.badge}
-        </span>
-        <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-stack-sm max-w-3xl leading-tight">
+      <section className="flex flex-col items-center text-center mb-stack-lg pt-stack-sm">
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-stack-sm">
+          <span className="bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps px-4 py-2 rounded-full inline-block shadow-cute">
+            {project.badge}
+          </span>
+          <span className="bg-surface-container-high text-secondary font-label-caps text-label-caps px-4 py-2 rounded-full inline-block">
+            {project.period}
+          </span>
+        </div>
+        <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-stack-sm max-w-4xl leading-tight">
           {project.title}
           {project.subtitle && (
             <>
               <br />
-              <span className="text-secondary opacity-80">
+              <span className="text-secondary opacity-80 text-3xl md:text-4xl">
                 {project.subtitle}
               </span>
             </>
@@ -73,74 +78,72 @@ export default async function ProjectDetailPage({
           {project.summary}
         </p>
 
-        {/* Action Links (GitHub / Live Demo) */}
+        {/* Action Links (GitHub / Live Service) */}
         {project.links && (project.links.github || project.links.demo) && (
-          <div className="flex flex-wrap justify-center gap-4 mb-stack-lg">
-            {project.links.demo && (
-              <Link
-                href={project.links.demo}
-                className="inline-flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-full font-body-base font-bold cute-button-shadow hover:scale-105 transition-transform"
-              >
-                <span className="material-symbols-outlined text-[20px]">
-                  rocket_launch
-                </span>
-                Live Demo 보기
-              </Link>
-            )}
+          <div className="flex flex-wrap justify-center gap-4">
             {project.links.github && (
               <a
                 href={project.links.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-surface-container-high text-on-surface px-6 py-3 rounded-full font-body-base font-bold cute-button-shadow hover:bg-secondary-container transition-colors"
+                className="inline-flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-full font-body-base font-bold cute-button-shadow hover:scale-105 transition-transform"
               >
                 <span className="material-symbols-outlined text-[20px]">
                   code
                 </span>
-                GitHub 저장소
+                GitHub 저장소 보기
+              </a>
+            )}
+            {project.links.demo && (
+              <a
+                href={project.links.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-full font-body-base font-bold cute-button-shadow hover:scale-105 transition-transform"
+              >
+                <span className="material-symbols-outlined text-[20px]">
+                  open_in_new
+                </span>
+                실제 서비스 바로가기
               </a>
             )}
           </div>
         )}
-
-        {project.heroImage && (
-          <div className="w-full max-w-5xl aspect-video rounded-[40px] overflow-hidden shadow-cute relative">
-            <img
-              className="w-full h-full object-cover"
-              alt={project.heroImageAlt}
-              src={project.heroImage}
-              loading="eager"
-              fetchPriority="high"
-            />
-          </div>
-        )}
       </section>
 
-      {/* Project Overview / Concept */}
+      {/* Project Overview & Architecture Decisions */}
       <section className="mb-stack-xl">
-        <div className="bg-surface-container-low rounded-[40px] p-stack-md md:p-stack-lg shadow-cute flex flex-col md:flex-row gap-stack-md items-center">
-          <div className={project.conceptImage ? "md:w-1/2" : "w-full"}>
-            <h2 className="font-headline-md text-headline-md text-primary mb-stack-sm">
-              {project.conceptTitle}
-            </h2>
-            {project.conceptHighlight && (
-              <p className="font-body-base text-body-base text-on-surface font-bold mb-3 text-lg">
-                {project.conceptHighlight}
-              </p>
-            )}
-            <p className="font-body-base text-body-base text-on-surface-variant mb-stack-sm leading-relaxed">
-              {project.conceptDescription}
+        <div className="bg-surface-container-low rounded-[40px] p-stack-md md:p-stack-lg shadow-cute">
+          <h2 className="font-headline-md text-headline-md text-primary mb-2">
+            {project.conceptTitle}
+          </h2>
+          {project.conceptHighlight && (
+            <p className="font-body-base text-body-base text-secondary font-bold mb-4 text-lg">
+              {project.conceptHighlight}
             </p>
-          </div>
-          {project.conceptImage && (
-            <div className="md:w-1/2 rounded-4xl overflow-hidden shadow-sm border border-outline-variant/20">
-              <img
-                className="w-full h-auto object-cover"
-                alt={project.conceptImageAlt || project.title}
-                src={project.conceptImage}
-                loading="eager"
-                fetchPriority="high"
-              />
+          )}
+          <p className="font-body-base text-body-base text-on-surface-variant mb-stack-md leading-relaxed">
+            {project.conceptDescription}
+          </p>
+
+          {project.architectureNotes.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-outline-variant/20">
+              {project.architectureNotes.map((note) => (
+                <div
+                  key={note.title}
+                  className="bg-surface-container-lowest p-6 rounded-3xl shadow-sm"
+                >
+                  <h3 className="font-body-base font-bold text-primary mb-2 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[20px]">
+                      architecture
+                    </span>
+                    {note.title}
+                  </h3>
+                  <p className="font-body-base text-sm text-on-surface-variant leading-relaxed">
+                    {note.description}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -174,7 +177,7 @@ export default async function ProjectDetailPage({
                 >
                   {feature.title}
                 </h3>
-                <p className="font-body-base text-body-base text-on-surface-variant text-sm">
+                <p className="font-body-base text-body-base text-on-surface-variant text-sm leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -183,39 +186,62 @@ export default async function ProjectDetailPage({
         </div>
       </section>
 
-      {/* Troubleshooting Section (Optional per project) */}
-      {project.troubleshooting && project.troubleshooting.length > 0 && (
+      {/* Troubleshooting Section */}
+      {project.troubleshooting.length > 0 && (
         <section className="mb-stack-xl">
           <div className="text-center mb-stack-md">
             <h2 className="font-headline-md text-headline-md text-primary mb-2">
               Troubleshooting
             </h2>
             <p className="font-body-base text-body-base text-on-surface-variant text-sm">
-              개발 과정에서 마주한 문제와 해결 과정
+              설계 및 운영 과정에서 마주한 문제와 해결 과정
             </p>
           </div>
-          <div className="space-y-4 max-w-4xl mx-auto">
-            {project.troubleshooting.map((item, idx) => (
+          <div className="space-y-6 max-w-4xl mx-auto">
+            {project.troubleshooting.map((item) => (
               <div
-                key={idx}
-                className="bg-surface-container-low rounded-[32px] p-stack-md shadow-cute border border-outline-variant/20"
+                key={item.title}
+                className="bg-surface-container-low rounded-[32px] p-stack-md shadow-cute border border-outline-variant/20 space-y-3"
               >
-                <div className="flex items-start gap-3 mb-3">
-                  <span className="bg-error-container text-on-error-container px-3 py-1 rounded-full font-label-caps text-label-caps shrink-0 mt-0.5">
+                <h3 className="font-headline-md text-xl text-primary font-bold mb-3">
+                  {item.title}
+                </h3>
+                <div className="bg-error-container/25 p-4 rounded-2xl">
+                  <span className="font-bold text-error text-xs uppercase tracking-wider block mb-1">
                     Problem
                   </span>
-                  <p className="font-body-base text-body-base font-bold text-on-surface">
+                  <p className="font-body-base text-sm text-on-surface">
                     {item.problem}
                   </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full font-label-caps text-label-caps shrink-0 mt-0.5">
+                {item.cause && (
+                  <div className="bg-surface-container p-4 rounded-2xl">
+                    <span className="font-bold text-secondary text-xs uppercase tracking-wider block mb-1">
+                      Cause
+                    </span>
+                    <p className="font-body-base text-sm text-on-surface-variant">
+                      {item.cause}
+                    </p>
+                  </div>
+                )}
+                <div className="bg-primary-fixed/40 p-4 rounded-2xl">
+                  <span className="font-bold text-primary text-xs uppercase tracking-wider block mb-1">
                     Solution
                   </span>
-                  <p className="font-body-base text-body-base text-on-surface-variant">
+                  <p className="font-body-base text-sm text-on-surface">
                     {item.solution}
                   </p>
                 </div>
+                {item.result && (
+                  <div className="bg-tertiary-fixed/40 p-4 rounded-2xl">
+                    <span className="font-bold text-tertiary text-xs uppercase tracking-wider block mb-1">
+                      Result
+                    </span>
+                    <p className="font-body-base text-sm text-on-surface font-medium">
+                      {item.result}
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -241,4 +267,3 @@ export default async function ProjectDetailPage({
     </main>
   );
 }
-

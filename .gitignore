@@ -37,3 +37,8 @@ Thumbs.db
 
 # Docker
 *.log
+
+# Personal portfolio data & images (use *.example.ts as templates)
+frontend/src/data/profile.ts
+frontend/src/data/projects.ts
+frontend/public/images/hero-avatar.jpg
