@@ -13,4 +13,6 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     reply: str
     links: list[ChatLinkSchema] = []
-
+    provider: str = "fallback"
+    is_fallback: bool = False
+    latency_ms: int = 0

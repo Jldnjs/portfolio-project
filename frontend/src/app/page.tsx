@@ -4,7 +4,7 @@ import { PROJECTS } from "@/data/projects";
 
 export default function Home() {
   const recentExperiences = PROFILE.experiences.slice(0, 2);
-  const [featuredMain, projectSecond, projectThird] = PROJECTS;
+  const [featuredMain, projectSecond, projectThird, projectFourth] = PROJECTS;
 
   return (
     <main className="max-w-container-max mx-auto px-margin-mobile md:px-gutter pt-stack-lg pb-stack-lg">
@@ -143,53 +143,48 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* 1. Featured Wide Card (PROJECTS[0] - VOC-OPS-MSA) */}
+          {/* 1. Card 1 (PROJECTS[0] - VOC-OPS-MSA) */}
           {featuredMain && (
             <Link
               href={`/project/${featuredMain.slug}`}
-              className="md:col-span-2 bg-secondary-container/30 rounded-[2rem] p-8 cute-shadow flex flex-col justify-between group hover:bg-secondary-container/50 transition-colors"
+              className="bg-secondary-container/30 rounded-[2rem] p-8 cute-shadow flex flex-col justify-between group hover:bg-secondary-container/50 transition-colors"
             >
-              <div className="flex justify-between items-start mb-4">
-                <div className="w-16 h-16 rounded-full bg-surface flex items-center justify-center text-primary cute-shadow">
-                  <span
-                    className="material-symbols-outlined"
-                    style={{
-                      fontSize: "32px",
-                      fontVariationSettings: "'FILL' 1",
-                    }}
-                  >
-                    {featuredMain.icon}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-label-caps text-label-caps text-secondary bg-surface px-3 py-1 rounded-full">
-                    {featuredMain.period}
-                  </span>
+              <div>
+                <div className="flex justify-between items-start mb-4">
+                  <div className="w-14 h-14 rounded-full bg-surface flex items-center justify-center text-primary cute-shadow">
+                    <span
+                      className="material-symbols-outlined"
+                      style={{
+                        fontSize: "28px",
+                        fontVariationSettings: "'FILL' 1",
+                      }}
+                    >
+                      {featuredMain.icon}
+                    </span>
+                  </div>
                   <span className="font-label-caps text-label-caps text-primary bg-primary-fixed px-3 py-1 rounded-full">
                     {featuredMain.categoryTag}
                   </span>
                 </div>
-              </div>
-              <div>
-                <h3 className="font-headline-md text-headline-md text-on-surface mb-1">
-                  {featuredMain.title}{" "}
-                  <span className="text-secondary text-xl font-semibold">
-                    {featuredMain.subtitle}
-                  </span>
+                <h3 className="font-headline-md text-2xl text-on-surface font-bold mb-1">
+                  {featuredMain.title}
                 </h3>
-                <p className="font-body-base text-body-base text-on-surface-variant mb-6 max-w-3xl">
+                <p className="text-xs font-bold text-secondary mb-3">
+                  {featuredMain.subtitle} · {featuredMain.period}
+                </p>
+                <p className="font-body-base text-sm text-on-surface-variant mb-6 leading-relaxed">
                   {featuredMain.summary}
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {featuredMain.techStack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 bg-surface text-on-surface rounded-full text-xs font-semibold shadow-sm"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {featuredMain.techStack.slice(0, 5).map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2.5 py-1 bg-surface text-on-surface rounded-full text-xs font-semibold"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </Link>
           )}
@@ -275,6 +270,52 @@ export default function Home() {
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {projectThird.techStack.slice(0, 5).map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2.5 py-1 bg-surface text-on-surface rounded-full text-xs font-semibold"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </Link>
+          )}
+
+          {/* 4. Card 4 (PROJECTS[3] - AI 백엔드 포트폴리오 플랫폼) */}
+          {projectFourth && (
+            <Link
+              href={`/project/${projectFourth.slug}`}
+              className="bg-error-container/30 rounded-[2rem] p-8 cute-shadow flex flex-col justify-between group hover:bg-error-container/50 transition-colors"
+            >
+              <div>
+                <div className="flex justify-between items-start mb-4">
+                  <div className="w-14 h-14 rounded-full bg-surface flex items-center justify-center text-primary cute-shadow">
+                    <span
+                      className="material-symbols-outlined"
+                      style={{
+                        fontSize: "28px",
+                        fontVariationSettings: "'FILL' 1",
+                      }}
+                    >
+                      {projectFourth.icon}
+                    </span>
+                  </div>
+                  <span className="font-label-caps text-label-caps text-primary bg-surface px-3 py-1 rounded-full">
+                    {projectFourth.categoryTag}
+                  </span>
+                </div>
+                <h3 className="font-headline-md text-2xl text-on-surface font-bold mb-1">
+                  {projectFourth.title}
+                </h3>
+                <p className="text-xs font-bold text-secondary mb-3">
+                  {projectFourth.subtitle} · {projectFourth.period}
+                </p>
+                <p className="font-body-base text-sm text-on-surface-variant mb-6 leading-relaxed">
+                  {projectFourth.summary}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {projectFourth.techStack.slice(0, 5).map((tech) => (
                   <span
                     key={tech}
                     className="px-2.5 py-1 bg-surface text-on-surface rounded-full text-xs font-semibold"

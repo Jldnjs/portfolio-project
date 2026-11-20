@@ -1,8 +1,32 @@
+import logging
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.core.config import settings
+import app.models  # noqa: F401
 from app.api.v1.router import api_router
+from app.core.config import settings
+from app.core.database import Base, engine
+from app.core.http_client import close_http_client, init_http_client
+
+logger = logging.getLogger(__name__)
+
+
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    """애플리케이션 시작/종료 시 싱글톤 HTTP 클라이언트와 DB 스키마를 초기화합니다."""
+    await init_http_client()
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+    except Exception as exc:
+        logger.warning("Database initialization skipped: %s", exc)
+
+    yield
+
+    await close_http_client()
+    await engine.dispose()
 
 
 def create_application() -> FastAPI:
@@ -13,6 +37,7 @@ def create_application() -> FastAPI:
         openapi_url=f"{settings.API_V1_STR}/openapi.json",
         docs_url=f"{settings.API_V1_STR}/docs",
         redoc_url=f"{settings.API_V1_STR}/redoc",
+        lifespan=lifespan,
     )
 
     # CORS

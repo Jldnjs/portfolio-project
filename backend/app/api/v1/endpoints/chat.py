@@ -1,52 +1,65 @@
-from fastapi import APIRouter
+import logging
 
-from app.schemas.chat import ChatLinkSchema, ChatRequest, ChatResponse
+from fastapi import APIRouter, Depends, HTTPException, Request, status
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.config import settings
+from app.core.database import get_db
+from app.crud.chat_log import create_chat_log
+from app.schemas.chat import ChatRequest, ChatResponse
+from app.services.llm_service import generate_portfolio_reply
+from app.services.rate_limiter import InMemoryRateLimiter
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
+rate_limiter = InMemoryRateLimiter(
+    max_requests=settings.CHAT_RATE_LIMIT_PER_MINUTE,
+    window_seconds=60,
+)
 
 
 @router.post("", response_model=ChatResponse)
-async def chat_with_portfolio_ai(payload: ChatRequest) -> ChatResponse:
-    """포트폴리오 AI 챗봇 응답 엔드포인트"""
-    q = payload.message.lower()
-
-    if any(k in q for k in ["스택", "기술", "skill", "stack", "rag", "fastapi"]):
-        return ChatResponse(
-            reply=(
-                "Java/Spring Boot 백엔드 경험과 함께 Python/FastAPI, RAG 파이프라인, "
-                "PostgreSQL/MySQL, Docker 기반 풀스택 아키텍처를 설계하고 구현합니다."
-            ),
-            links=[
-                ChatLinkSchema(label="이력서 및 기술 스택 보기", href="/resume"),
-                ChatLinkSchema(label="전체 프로젝트 목록", href="/project/list"),
-            ],
+async def chat_with_portfolio_ai(
+    request: Request,
+    payload: ChatRequest,
+    db: AsyncSession = Depends(get_db),
+) -> ChatResponse:
+    """
+    포트폴리오 AI 챗봇 응답 엔드포인트
+    - IP 기반 분당 Rate Limit 적용
+    - 전역 싱글톤 httpx.AsyncClient로 Gemini API 호출 (장애/한도 초과 시 로컬 폴백)
+    - 질문/응답/지연시간/폴백 여부를 PostgreSQL(chat_logs)에 기록
+    """
+    client_ip = request.client.host if request.client else "unknown"
+    if not rate_limiter.is_allowed(client_ip):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="잠시 후 다시 질문해 주세요. (요청 한도 초과)",
         )
 
-    if any(k in q for k in ["트러블", "문제", "어려웠", "해결", "동시성"]):
-        return ChatResponse(
-            reply="실무 및 프로젝트에서 해결한 트러블슈팅 사례는 이력서 타임라인과 각 프로젝트 상세 페이지에서 확인하실 수 있습니다.",
-            links=[
-                ChatLinkSchema(label="트러블슈팅 상세 보기", href="/resume/history#troubleshooting"),
-                ChatLinkSchema(label="프로젝트 목록 보기", href="/project/list"),
-            ],
-        )
+    reply, links, provider, is_fallback, latency_ms = await generate_portfolio_reply(
+        payload.message
+    )
 
-    if any(k in q for k in ["이력", "경력", "resume", "커리어", "연락"]):
-        return ChatResponse(
-            reply="이력서 요약 페이지와 상세 경력 타임라인에서 경력, 기술 스택, 교육사항을 확인하실 수 있습니다.",
-            links=[
-                ChatLinkSchema(label="이력서 요약 (/resume)", href="/resume"),
-                ChatLinkSchema(label="상세 경력 타임라인 (/resume/history)", href="/resume/history"),
-            ],
+    # DB 로깅 실패가 사용자 챗봇 응답을 중단시키지 않도록 방어
+    try:
+        await create_chat_log(
+            db,
+            client_ip=client_ip,
+            question=payload.message,
+            reply=reply,
+            provider=provider,
+            is_fallback=is_fallback,
+            latency_ms=latency_ms,
         )
+    except Exception as exc:
+        logger.warning("Failed to persist chat log to DB: %s", exc)
 
     return ChatResponse(
-        reply=(
-            "안녕하세요! 포트폴리오 AI 어시스턴트입니다. "
-            "기술 스택, 대표 프로젝트, 트러블슈팅 경험, 경력에 대해 물어보세요!"
-        ),
-        links=[
-            ChatLinkSchema(label="핵심 프로젝트 보기", href="/project/list"),
-            ChatLinkSchema(label="이력서 확인하기", href="/resume"),
-        ],
+        reply=reply,
+        links=links,
+        provider=provider,
+        is_fallback=is_fallback,
+        latency_ms=latency_ms,
     )

@@ -154,7 +154,7 @@ export default function ChatPage() {
       id: "welcome",
       role: "assistant",
       content:
-        "안녕하세요! 👋 CreatorPort AI 어시스턴트입니다. 제 기술 스택이나 토이 프로젝트, 문제 해결 경험, 경력에 대해 궁금한 점이 있으신가요? 아래 추천 질문을 눌러보시거나 편하게 질문해 주세요!",
+        "안녕하세요! 포트폴리오 AI 어시스턴트입니다. 백엔드 경력, 기술 스택, 토이 프로젝트, 트러블슈팅 경험에 대해 궁금한 점을 편하게 질문해 주세요.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -243,8 +243,8 @@ export default function ChatPage() {
             Ask me anything
           </h1>
           <p className="font-body-base text-body-base text-on-surface-variant text-center max-w-md">
-            포트폴리오와 토이 프로젝트 데이터를 학습한 AI 어시스턴트입니다.
-            궁금한 점을 자유롭게 물어보세요!
+            이력서와 프로젝트 데이터를 바탕으로 답변하는 AI 어시스턴트입니다.
+            궁금한 점을 자유롭게 물어보세요.
           </p>
         </div>
 

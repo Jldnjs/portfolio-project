@@ -26,6 +26,12 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
+    # ── AI / Gemini LLM ────────────────────────
+    GEMINI_API_KEY: str = ""
+    GEMINI_MODEL: str = "gemini-2.5-flash"
+    CHAT_RATE_LIMIT_PER_MINUTE: int = 15
+    PORTFOLIO_CONTEXT_PATH: str = "app/data/portfolio_context.md"
+
     # ── CORS ──────────────────────────────────────────
     # pydantic-settings v2에서 List[str] 환경변수는 JSON 형식이어야 해서
     # str로 받아 property에서 분리합니다 (예: "http://a,http://b")

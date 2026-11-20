@@ -125,7 +125,7 @@ export default function Navbar() {
           style={{ animationDuration: "3s" }}
         >
           <div className="bg-surface text-on-surface-variant text-xs font-bold px-3 py-2 rounded-2xl rounded-br-none cute-shadow mb-2 opacity-0 group-hover:opacity-100 transition-opacity cursor-default">
-            안녕! 궁금한게 있니?
+            궁금한 점이 있으신가요?
           </div>
           <Link
             href="/chat"

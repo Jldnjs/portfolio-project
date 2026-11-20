@@ -65,7 +65,7 @@ export default function RootLayout({
               </a>
             </div>
             <div className="font-label-caps text-label-caps text-secondary dark:text-secondary-fixed">
-              © 2026 {PROFILE.brandName}. Built with Heart and Logic.
+              © 2026 {PROFILE.brandName}. Built with FastAPI &amp; Next.js.
             </div>
           </div>
         </footer>
